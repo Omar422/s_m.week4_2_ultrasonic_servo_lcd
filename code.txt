@@ -75,7 +75,7 @@ void loop()
     lcd.setCursor(0, 0);
     // Print a message to the LCD.
     String msg1 = "Hi U R ";
-    String msg2 = "cm Away";
+    String msg2 = "cm Away..";
   	lcd.print(msg1+distance+msg2);
     lcd.setCursor(0, 1);
     lcd.print("May I Help U.?");
