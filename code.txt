@@ -1,0 +1,126 @@
+// C++ code
+//
+#include <Servo.h>
+#include <LiquidCrystal.h>
+
+long duration;
+int distance;
+
+Servo r_shoulder;
+Servo r_elbow;
+Servo r_wrist;
+
+Servo l_shoulder;
+Servo l_elbow;
+Servo l_wrist;
+
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
+void setup()
+{
+  pinMode(8, OUTPUT); // triger
+  pinMode(7, INPUT); // echo
+  // Servo
+  pinMode(A0, OUTPUT);
+  pinMode(A1, OUTPUT);
+  pinMode(A2, OUTPUT);
+  pinMode(A3, OUTPUT);
+  pinMode(A4, OUTPUT);
+  pinMode(A5, OUTPUT);
+  
+  // Led
+  pinMode(0, OUTPUT);
+  pinMode(1, OUTPUT);
+  pinMode(6, OUTPUT);
+  pinMode(9, OUTPUT);
+  pinMode(10, OUTPUT);
+  pinMode(13, OUTPUT);
+  
+  r_shoulder.attach(A0, 500, 2500);
+  r_elbow.attach(A1, 500, 2500);
+  r_wrist.attach(A2, 500, 2500);
+  
+  l_shoulder.attach(A3, 500, 2500);
+  l_elbow.attach(A4, 500, 2500);
+  l_wrist.attach(A5, 500, 2500);
+  
+  r_shoulder.write(0);
+  r_elbow.write(0);
+  r_wrist.write(0);
+  l_shoulder.write(0);
+  l_elbow.write(0);
+  l_wrist.write(0);
+  
+  // LCD's number of columns and rows:
+  lcd.begin(16, 2);
+  
+}
+
+void loop()
+{
+  digitalWrite(8, LOW);
+  delayMicroseconds(2);
+  
+  digitalWrite(8, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(8, LOW);
+  
+  duration = pulseIn(7, HIGH);
+  distance = duration * 0.034/2;
+  
+  if (distance <= 100 ) {
+    
+    delay(3000);
+    
+    lcd.setCursor(0, 0);
+    // Print a message to the LCD.
+    String msg1 = "Hi U R ";
+    String msg2 = "cm Away";
+  	lcd.print(msg1+distance+msg2);
+    lcd.setCursor(0, 1);
+    lcd.print("May I Help U.?");
+    
+    digitalWrite(0, HIGH);
+    digitalWrite(1, HIGH);
+    digitalWrite(6, HIGH);
+    digitalWrite(9, HIGH);
+    digitalWrite(10, HIGH);
+    digitalWrite(13, HIGH);
+    
+    r_shoulder.write(35);
+    r_elbow.write(50);
+    r_wrist.write(90);
+    l_shoulder.write(35);
+    l_elbow.write(50);
+    l_wrist.write(90);
+    
+    
+  } else {
+    
+    delay(3000);
+    
+    lcd.setCursor(0, 0);
+    // Print a message to the LCD.
+    String msg1 = "U R ";
+    String msg2 = "cm Away..";
+  	lcd.print(msg1+distance+msg2);
+    lcd.setCursor(0, 1);
+    lcd.print("Get Closer Pls.!");
+    
+    digitalWrite(0, LOW);
+    digitalWrite(1, LOW);
+    digitalWrite(6, LOW);
+    digitalWrite(9, LOW);
+    digitalWrite(10, LOW);
+    digitalWrite(13, LOW);
+    
+    r_shoulder.write(0);
+    r_elbow.write(0);
+    r_wrist.write(0);
+    l_shoulder.write(0);
+    l_elbow.write(0);
+    l_wrist.write(0);
+    
+  }
+  
+}
